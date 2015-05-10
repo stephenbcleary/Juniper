@@ -3,5 +3,18 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_tip_entry">Enter Tip</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="fab_descriptor">Add tip entry</string>
+
+    <string name="tipout_label">$</string>
+    <string name="hours_entry_label">Worked</string>
+    <string name="entry_save">Save</string>
+    <string name="tip_duration_hours_label">hours</string>
+    <string name="tip_duration_minutes_label">minutes</string>
+    <string name="tip_entry_date_label">Date</string>
+    <string name="tip_entry_time_label">Start time</string>
+    <string name="tip_duration_label">Duration</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

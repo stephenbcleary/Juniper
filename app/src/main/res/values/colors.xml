@@ -17,4 +17,5 @@
 <resources>
     <color name="fab_color_1">#ff5252</color>
     <color name="fab_color_1_muted">#ff8080</color>
+    <color name="form_divider_lines">#e0e0e0</color>
 </resources>

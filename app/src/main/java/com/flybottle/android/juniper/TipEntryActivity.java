@@ -1,9 +1,15 @@
 package com.flybottle.android.juniper;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class TipEntryActivity extends Activity {
@@ -12,6 +18,9 @@ public class TipEntryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_entry);
+        Intent intent = getIntent();
+        EditText editText = (EditText)findViewById(R.id.tip_entry_time_field);
+        editText.setHint("newTime");
     }
 
     @Override
@@ -34,5 +43,10 @@ public class TipEntryActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerDialog();
+        newFragment.show(getFragmentManager(), "timePicker");
     }
 }

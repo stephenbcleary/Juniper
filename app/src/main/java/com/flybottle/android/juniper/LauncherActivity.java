@@ -20,8 +20,9 @@ public class LauncherActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tipsDataset = makeStringsArray();
+
         setContentView(R.layout.activity_launcher);
+        /*
         tipsRecyclerView = (RecyclerView) findViewById(R.id.tips_recycler_view);
 
         // user this setting to improve performance if you that changes
@@ -35,20 +36,9 @@ public class LauncherActivity extends Activity {
         // specify an adapter
         tipsAdapter = new TipsAdapter(tipsDataset);
         tipsRecyclerView.setAdapter(tipsAdapter);
+        */
 
 
-    }
-
-    /*
-    TODO: Add in onResume, as we will be resuming this from the 'add Tips' page.
-     */
-
-    public String[] makeStringsArray() {
-        String[] result = new String[100];
-        for (int i=0; i<result.length; i++) {
-            result[i] = "Tips Date " + i + ": $" + ((i%4) * 10);
-        }
-        return result;
     }
 
     @Override
