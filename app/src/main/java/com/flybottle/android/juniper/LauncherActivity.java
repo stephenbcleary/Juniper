@@ -1,17 +1,51 @@
 package com.flybottle.android.juniper;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+public class LauncherActivity extends Activity {
+    private RecyclerView tipsRecyclerView;
+    private RecyclerView.Adapter tipsAdapter;
+    private RecyclerView.LayoutManager tipsLayoutManager;
+    private String[] tipsDataset;
 
-public class LauncherActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tipsDataset = makeStringsArray();
         setContentView(R.layout.activity_launcher);
+        tipsRecyclerView = (RecyclerView) findViewById(R.id.tips_recycler_view);
+
+        // user this setting to improve performance if you that changes
+        // in content do not change the layout size of the RecyclerView
+        tipsRecyclerView.setHasFixedSize(true);
+
+        // Use a linear layout manger
+        tipsLayoutManager = new LinearLayoutManager(this);
+        tipsRecyclerView.setLayoutManager(tipsLayoutManager);
+
+        // specify an adapter
+        tipsAdapter = new TipsAdapter(tipsDataset);
+        tipsRecyclerView.setAdapter(tipsAdapter);
+
+
+    }
+
+    /*
+    TODO: Add in onResume, as we will be resuming this from the 'add Tips' page.
+     */
+
+    public String[] makeStringsArray() {
+        String[] result = new String[100];
+        for (int i=0; i<result.length; i++) {
+            result[i] = "Tips Date " + i + ": $" + ((i%4) * 10);
+        }
+        return result;
     }
 
     @Override
