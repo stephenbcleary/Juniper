@@ -1,11 +1,14 @@
 package com.flybottle.android.juniper;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 public class LauncherActivity extends Activity {
     private RecyclerView tipsRecyclerView;
@@ -68,5 +71,14 @@ public class LauncherActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Called when the user clicks the Floating Action Button
+     * @param view The current view.
+     */
+    public void addEntry(View view) {
+        Intent intent = new Intent(this, TipEntryActivity.class);
+        startActivity(intent);
     }
 }

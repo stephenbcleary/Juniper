@@ -23,7 +23,8 @@
         android:layout_below="@+id/tips_recycler_view"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/fab_margin_top"
-        android:layout_marginEnd="@dimen/fab_margin_end">
+        android:layout_marginEnd="@dimen/fab_margin_end"
+        android:onClick="addEntry" >
 
         <ImageView
             android:layout_width="@dimen/fab_icon_size"
