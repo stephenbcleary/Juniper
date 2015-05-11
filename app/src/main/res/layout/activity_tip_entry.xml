@@ -47,7 +47,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <TextView
@@ -61,7 +61,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="showDatePickerDialog"
-                android:text="@string/date_entry" />
+                android:text="@string/date_entry"
+                android:textColor="@color/accent_material_light"
+                android:textSize="@dimen/form_date_time_text_size"/>
 
         </LinearLayout>
 
@@ -77,20 +79,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/time_label" />
 
-            <!--
-            <EditText
-                android:id="@+id/tip_entry_time_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="showTimePickerDialog"
-                android:inputType="none" />
-            -->
             <TextView
                 android:id="@+id/tip_entry_time_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="showTimePickerDialog"
-                android:text="@string/time_entry"/>
+                android:text="@string/time_entry"
+                android:textColor="@color/accent_material_light"
+                android:textSize="@dimen/form_date_time_text_size"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -117,14 +113,14 @@
             android:id="@+id/tip_entry_duration_hours"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:inputType="number" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/duration_hours_label"
-            android:inputType="number" />
+            android:text="@string/duration_hours_label" />
 
         <EditText
             android:id="@+id/tip_entry_duration_minutes"
