@@ -5,15 +5,19 @@
 
     <string name="fab_descriptor">Add tip entry</string>
 
-    <string name="tipout_label">$</string>
-    <string name="hours_entry_label">Worked</string>
-    <string name="entry_save">Save</string>
-    <string name="tip_duration_hours_label">hours</string>
-    <string name="tip_duration_minutes_label">minutes</string>
-    <string name="tip_entry_date_label">Date</string>
-    <string name="tip_entry_time_label">Start time</string>
-    <string name="tip_duration_label">Duration</string>
 
+    <!-- Tip Entry Form -->
+    <string name="entry_save">Save</string>
+    <string name="tipout_label">$</string>
+
+    <string name="date_label">Date</string>
+    <string name="date_entry">Today</string>
+    <string name="time_label">Start time</string>
+    <string name="time_entry">Now</string>
+
+    <string name="duration_label">Duration</string>
+    <string name="duration_hours_label">hours</string>
+    <string name="duration_minutes_label">minutes</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

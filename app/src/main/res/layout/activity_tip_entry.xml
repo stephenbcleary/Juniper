@@ -54,13 +54,14 @@
                 android:id="@+id/tip_entry_date_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tip_entry_date_label" />
+                android:text="@string/date_label" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tip_entry_date_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date" />
+                android:onClick="showDatePickerDialog"
+                android:text="@string/date_entry" />
 
         </LinearLayout>
 
@@ -74,15 +75,22 @@
                 android:id="@+id/tip_entry_time_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tip_entry_time_label" />
+                android:text="@string/time_label" />
 
+            <!--
             <EditText
                 android:id="@+id/tip_entry_time_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="showTimePickerDialog"
                 android:inputType="none" />
-
+            -->
+            <TextView
+                android:id="@+id/tip_entry_time_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="showTimePickerDialog"
+                android:text="@string/time_entry"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -97,7 +105,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/tip_duration_label"/>
+        android:text="@string/duration_label"/>
 
     <LinearLayout
         android:id="@+id/tip_entry_duration_fields"
@@ -115,7 +123,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/tip_duration_hours_label"
+            android:text="@string/duration_hours_label"
             android:inputType="number" />
 
         <EditText
@@ -129,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/tip_duration_minutes_label"/>
+            android:text="@string/duration_minutes_label"/>
 
 
     </LinearLayout>
