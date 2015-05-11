@@ -11,5 +11,6 @@
     <dimen name="fab_icon_size">24dp</dimen>
 
     <!-- Diments for form entry page. -->
+    <dimen name="form_tip_size">36sp</dimen>
     <dimen name="form_date_time_text_size">22sp</dimen>
 </resources>

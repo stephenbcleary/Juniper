@@ -18,12 +18,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="@dimen/form_tip_size"
             android:text="@string/tipout_label"/>
 
         <EditText
             android:id="@+id/tipout_entry"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/form_tip_size"
             android:inputType="numberDecimal" />
 
     </LinearLayout>

@@ -1,22 +1,25 @@
 package com.flybottle.android.juniper;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
-public class TipEntryActivity extends Activity {
+public class TipEntryActivity extends Activity implements TimePickerDialog.OnTimeSetListener,
+                                                          DatePickerDialog.OnDateSetListener {
+    private TipEntry tipEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,22 +27,52 @@ public class TipEntryActivity extends Activity {
         setContentView(R.layout.activity_tip_entry);
         Intent intent = getIntent();
         initializeFields();
-
     }
 
 
     private void initializeFields() {
-        Date date = Calendar.getInstance().getTime();
+        tipEntry = new TipEntry();
+        refreshFields();
+    }
+
+    private void refreshFields() {
+        refreshDate();
+        refreshTime();
+    }
+
+    private void refreshDate() {
         DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
+        TextView startDate = (TextView) findViewById(R.id.tip_entry_date_field);
+        startDate.setText(formatter.format(tipEntry.getStartDate().getTime()));
+    }
 
-        // Date
-        TextView today = (TextView) findViewById(R.id.tip_entry_date_field);
-        today.setText(formatter.format(date));
-
-        // Time
-        formatter = new SimpleDateFormat("HH:mm");
+    private void refreshTime() {
+        DateFormat formatter = new SimpleDateFormat("HH:mm");
         TextView startTime = (TextView)findViewById(R.id.tip_entry_time_field);
-        startTime.setText(formatter.format(date));
+        startTime.setText(formatter.format(tipEntry.getStartDate().getTime()));
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        Calendar startDate = tipEntry.getStartDate();
+        startDate.set(year, month, day);
+        refreshDate();
+    }
+
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar startDate = tipEntry.getStartDate();
+        startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        startDate.set(Calendar.MINUTE, minute);
+        refreshTime();
     }
 
     @Override
@@ -62,15 +95,5 @@ public class TipEntryActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerDialog();
-        newFragment.show(getFragmentManager(), "timePicker");
-    }
-
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
     }
 }
