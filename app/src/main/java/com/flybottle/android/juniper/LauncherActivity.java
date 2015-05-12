@@ -8,13 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.EditText;
 
 public class LauncherActivity extends Activity {
-    private RecyclerView tipsRecyclerView;
-    private RecyclerView.Adapter tipsAdapter;
-    private RecyclerView.LayoutManager tipsLayoutManager;
-    private String[] tipsDataset;
 
 
     @Override
@@ -22,22 +19,7 @@ public class LauncherActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_launcher);
-        /*
-        tipsRecyclerView = (RecyclerView) findViewById(R.id.tips_recycler_view);
-
-        // user this setting to improve performance if you that changes
-        // in content do not change the layout size of the RecyclerView
-        tipsRecyclerView.setHasFixedSize(true);
-
-        // Use a linear layout manger
-        tipsLayoutManager = new LinearLayoutManager(this);
-        tipsRecyclerView.setLayoutManager(tipsLayoutManager);
-
-        // specify an adapter
-        tipsAdapter = new TipsAdapter(tipsDataset);
-        tipsRecyclerView.setAdapter(tipsAdapter);
-        */
-
+        updateCalendar();
 
     }
 
@@ -70,5 +52,10 @@ public class LauncherActivity extends Activity {
     public void addEntry(View view) {
         Intent intent = new Intent(this, TipEntryActivity.class);
         startActivity(intent);
+    }
+
+    public void updateCalendar() {
+        CalendarView calendar = (CalendarView)findViewById(R.id.main_calendar_view);
+        
     }
 }

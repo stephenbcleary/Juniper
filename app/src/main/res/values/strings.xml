@@ -18,4 +18,5 @@
     <string name="duration_label">Duration</string>
     <string name="duration_hours_label">hours</string>
     <string name="duration_minutes_label">minutes</string>
+    <string name="action_submit">Save</string>
 </resources>

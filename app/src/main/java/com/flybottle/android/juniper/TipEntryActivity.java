@@ -1,5 +1,6 @@
 package com.flybottle.android.juniper;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
@@ -25,6 +26,7 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_entry);
+
         Intent intent = getIntent();
         initializeFields();
     }
@@ -44,12 +46,22 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
         DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
         TextView startDate = (TextView) findViewById(R.id.tip_entry_date_field);
         startDate.setText(formatter.format(tipEntry.getStartDate().getTime()));
+        if (!TipEntry.isValidDate(tipEntry.getStartDate())) {
+            startDate.setError("Invalid Date");
+        } else {
+            startDate.setError(null);
+        }
     }
 
     private void refreshTime() {
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         TextView startTime = (TextView)findViewById(R.id.tip_entry_time_field);
         startTime.setText(formatter.format(tipEntry.getStartDate().getTime()));
+        if (!TipEntry.isValidDate(tipEntry.getStartDate())) {
+            startTime.setError("Invalid Date");
+        } else {
+            startTime.setError(null);
+        }
     }
 
     public void showTimePickerDialog(View v) {
@@ -75,6 +87,15 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
         refreshTime();
     }
 
+    public void saveEntry(View v) {
+        if (tipEntry.isComplete()) {
+            Engine.addTip(tipEntry);
+            finish();
+        } else {
+            refreshFields();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -96,4 +117,5 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
 
         return super.onOptionsItemSelected(item);
     }
+
 }
