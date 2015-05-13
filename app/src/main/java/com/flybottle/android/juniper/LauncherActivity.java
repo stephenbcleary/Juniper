@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class LauncherActivity extends Activity {
 
@@ -56,6 +57,7 @@ public class LauncherActivity extends Activity {
 
     public void updateCalendar() {
         CalendarView calendar = (CalendarView)findViewById(R.id.main_calendar_view);
-        
+        //calendar.setMinDate(1420084800L);
+        //calendar.setMaxDate(1451620800L);
     }
 }
