@@ -40,9 +40,7 @@ public class TipEntry {
     }
 
     public void setAmmount(double ammount) {
-        if (isValidAmmount(ammount)) {
-            this.ammount = ammount;
-        }
+        this.ammount = ammount;
     }
 
     public Calendar getStartDate() {
@@ -50,9 +48,7 @@ public class TipEntry {
     }
 
     public void setStartDate(Calendar startDate) {
-        if (isValidDate(startDate)) {
-            this.startDate = startDate;
-        }
+        this.startDate = startDate;
     }
 
     public Calendar getEndDate() {
@@ -60,9 +56,7 @@ public class TipEntry {
     }
 
     public void setEndDate(Calendar endDate) {
-        if (isValidDate(endDate)) {
-            this.endDate = endDate;
-        }
+        this.endDate = endDate;
     }
 
     public boolean isComplete() {

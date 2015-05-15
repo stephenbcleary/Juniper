@@ -88,12 +88,18 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     }
 
     public void saveEntry(View v) {
-        if (tipEntry.isComplete()) {
+        TextView ammount = (TextView)findViewById(R.id.tipout_entry);
+        String ammountString = ammount.getText().toString();
+        double ammountDouble = Double.parseDouble(ammountString);
+        tipEntry.setAmmount(Double.parseDouble(ammountString));
+
+        //if (tipEntry.isComplete()) {
             Engine.addTip(tipEntry);
             finish();
-        } else {
+        /*} else {
+            System.out.println("else");
             refreshFields();
-        }
+        }*/
     }
 
     @Override

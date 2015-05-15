@@ -6,27 +6,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 /**
  * This adapter manages the communication between the tips datasource and the tips layout.
  * Created by alex on 09/05/15.
  */
 public class TipsAdapter  extends RecyclerView.Adapter<TipsAdapter.ViewHolder> {
-    private String[] tipsDataset;
+    private List<TipEntry> tipsDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more that one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Each data item is just a String in this case
-        public TextView tipsTextView;
+        //public TextView tipsTextView;
+        public TextView tipDate;
+        public TextView tipPerHour;
+
         public ViewHolder(View view) {
             super(view);
-            tipsTextView = (TextView) view;
+            //tipsTextView = (TextView) view;
+            tipDate = (TextView) view.findViewById(R.id.tip_list_date);
+            tipPerHour = (TextView) view.findViewById(R.id.tip_list_per_hour);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TipsAdapter(String[] tipsDataset) {
+    public TipsAdapter(List<TipEntry> tipsDataset) {
         this.tipsDataset = tipsDataset;
     }
 
@@ -47,12 +58,18 @@ public class TipsAdapter  extends RecyclerView.Adapter<TipsAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tipsTextView.setText(tipsDataset[position]);
+        DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
+        holder.tipDate.setText(formatter.format(tipsDataset.get(position).getStartDate().getTime()));
+
+        NumberFormat numberFormat = new DecimalFormat("#0.00");
+        holder.tipPerHour.setText(numberFormat.format(tipsDataset.get(position).perHour()) + "/hr");
+
+        //holder.tipsTextView.setText(entry);
     }
 
     // Return the size of yoru dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return tipsDataset.length;
+        return tipsDataset.size();
     }
 }

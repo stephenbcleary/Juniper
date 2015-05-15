@@ -12,16 +12,29 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LauncherActivity extends Activity {
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
+public class LauncherActivity extends Activity {
+    private RecyclerView tipListRecyclerView;
+    private RecyclerView.Adapter tipListAdapter;
+    private RecyclerView.LayoutManager tipListLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_launcher);
-        updateCalendar();
+        tipListRecyclerView = (RecyclerView) findViewById(R.id.tip_list_recycler_view);
 
+        tipListRecyclerView.setHasFixedSize(true);
+
+        tipListLayoutManager = new LinearLayoutManager(this);
+        tipListRecyclerView.setLayoutManager(tipListLayoutManager);
+
+        tipListAdapter = new TipsAdapter(Engine.getTipList());
+        tipListRecyclerView.setAdapter(tipListAdapter);
+
+        updateStats();
     }
 
     @Override
@@ -46,6 +59,12 @@ public class LauncherActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateStats();
+    }
+
     /**
      * Called when the user clicks the Floating Action Button
      * @param view The current view.
@@ -55,9 +74,31 @@ public class LauncherActivity extends Activity {
         startActivity(intent);
     }
 
-    public void updateCalendar() {
-        CalendarView calendar = (CalendarView)findViewById(R.id.main_calendar_view);
-        //calendar.setMinDate(1420084800L);
-        //calendar.setMaxDate(1451620800L);
+    private void updateStats() {
+        NumberFormat formatter = new DecimalFormat("#0.00");
+
+        TextView view = (TextView)findViewById(R.id.weekly_stats_field);
+        view.setText("$" + formatter.format(Engine.getWeekTotal()));
+
+        view = (TextView)findViewById(R.id.week_best_day);
+        view.setText("$" + formatter.format(Engine.getBestDayThisWeek()));
+
+        view = (TextView)findViewById(R.id.week_worst_day);
+        view.setText("$" + formatter.format(Engine.getWorstDayThisWeek()));
+
+        view = (TextView)findViewById(R.id.week_average_day);
+        view.setText("$" + formatter.format(Engine.getAverageDayThisWeek()));
+
+        view = (TextView)findViewById(R.id.month_best_day);
+        view.setText("$" + formatter.format(Engine.getBestDayThisMonth()));
+
+        view = (TextView)findViewById(R.id.month_worst_day);
+        view.setText("$" + formatter.format(Engine.getWorstDayThisMonth()));
+
+        view = (TextView)findViewById(R.id.month_average_day);
+        view.setText("$" + formatter.format(Engine.getAverageDayThisMonth()));
+
+        view = (TextView)findViewById(R.id.month_stats_field);
+        view.setText("$" + formatter.format(Engine.getMonthTotal()));
     }
 }
