@@ -1,6 +1,5 @@
 package com.flybottle.android.juniper;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
@@ -20,6 +19,7 @@ import java.util.Calendar;
 
 public class TipEntryActivity extends Activity implements TimePickerDialog.OnTimeSetListener,
                                                           DatePickerDialog.OnDateSetListener {
+    private Juniper juniper = Juniper.getInstance();
     private TipEntry tipEntry;
 
     @Override
@@ -94,7 +94,7 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
         tipEntry.setAmmount(Double.parseDouble(ammountString));
 
         //if (tipEntry.isComplete()) {
-            Engine.addTip(tipEntry);
+            juniper.addTip(tipEntry);
             finish();
         /*} else {
             System.out.println("else");

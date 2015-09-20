@@ -8,6 +8,7 @@ import java.util.List;
  * Created by alex on 11/05/15.
  */
 public class Juniper {
+    private static Juniper instance = null;
     private static List<TipEntry> tipsList = new ArrayList<TipEntry>();
 
     static {
@@ -37,7 +38,14 @@ public class Juniper {
         // Enforce singleton.
     }
 
-    public static void addTip(TipEntry entry) {
+    public static Juniper getInstance() {
+        if (instance == null) {
+            instance = new Juniper();
+        }
+        return instance;
+    }
+
+    public void addTip(TipEntry entry) {
         tipsList.add(entry);
     }
 
@@ -50,11 +58,11 @@ public class Juniper {
         return null;
     }
 
-    public static List<TipEntry> getTipList() {
+    public List<TipEntry> getTipList() {
         return tipsList;
     }
 
-    public static double getWeekTotal() {
+    public double getWeekTotal() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
@@ -67,7 +75,7 @@ public class Juniper {
         return total;
     }
 
-    public static double getBestDayThisWeek() {
+    public double getBestDayThisWeek() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
@@ -82,7 +90,7 @@ public class Juniper {
         return best;
     }
 
-    public static double getWorstDayThisWeek() {
+    public double getWorstDayThisWeek() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
@@ -101,7 +109,7 @@ public class Juniper {
         return worst;
     }
 
-    public static double getAverageDayThisWeek() {
+    public double getAverageDayThisWeek() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
@@ -116,7 +124,7 @@ public class Juniper {
         return total / daysWorked;
     }
 
-    public static double getMonthTotal() {
+    public double getMonthTotal() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
@@ -129,7 +137,7 @@ public class Juniper {
         return total;
     }
 
-    public static double getBestDayThisMonth() {
+    public double getBestDayThisMonth() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
@@ -144,7 +152,7 @@ public class Juniper {
         return best;
     }
 
-    public static double getWorstDayThisMonth() {
+    public double getWorstDayThisMonth() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
@@ -163,7 +171,7 @@ public class Juniper {
         return worst;
     }
 
-    public static double getAverageDayThisMonth() {
+    public double getAverageDayThisMonth() {
         Calendar now = Calendar.getInstance();
         Calendar past = Calendar.getInstance();
         past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
@@ -177,8 +185,5 @@ public class Juniper {
         }
         return total / daysWorked;
     }
-
-
-
 
 }

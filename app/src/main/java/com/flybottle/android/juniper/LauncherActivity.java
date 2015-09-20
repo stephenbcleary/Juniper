@@ -8,8 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -19,6 +17,7 @@ public class LauncherActivity extends Activity {
     private RecyclerView tipListRecyclerView;
     private RecyclerView.Adapter tipListAdapter;
     private RecyclerView.LayoutManager tipListLayoutManager;
+    private Juniper juniper = Juniper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class LauncherActivity extends Activity {
         tipListLayoutManager = new LinearLayoutManager(this);
         tipListRecyclerView.setLayoutManager(tipListLayoutManager);
 
-        tipListAdapter = new TipsAdapter(Engine.getTipList());
+        tipListAdapter = new TipsAdapter(juniper.getTipList());
         tipListRecyclerView.setAdapter(tipListAdapter);
 
         updateStats();
@@ -78,27 +77,27 @@ public class LauncherActivity extends Activity {
         NumberFormat formatter = new DecimalFormat("#0.00");
 
         TextView view = (TextView)findViewById(R.id.weekly_stats_field);
-        view.setText("$" + formatter.format(Engine.getWeekTotal()));
+        view.setText("$" + formatter.format(juniper.getWeekTotal()));
 
         view = (TextView)findViewById(R.id.week_best_day);
-        view.setText("$" + formatter.format(Engine.getBestDayThisWeek()));
+        view.setText("$" + formatter.format(juniper.getBestDayThisWeek()));
 
         view = (TextView)findViewById(R.id.week_worst_day);
-        view.setText("$" + formatter.format(Engine.getWorstDayThisWeek()));
+        view.setText("$" + formatter.format(juniper.getWorstDayThisWeek()));
 
         view = (TextView)findViewById(R.id.week_average_day);
-        view.setText("$" + formatter.format(Engine.getAverageDayThisWeek()));
+        view.setText("$" + formatter.format(juniper.getAverageDayThisWeek()));
 
         view = (TextView)findViewById(R.id.month_best_day);
-        view.setText("$" + formatter.format(Engine.getBestDayThisMonth()));
+        view.setText("$" + formatter.format(juniper.getBestDayThisMonth()));
 
         view = (TextView)findViewById(R.id.month_worst_day);
-        view.setText("$" + formatter.format(Engine.getWorstDayThisMonth()));
+        view.setText("$" + formatter.format(juniper.getWorstDayThisMonth()));
 
         view = (TextView)findViewById(R.id.month_average_day);
-        view.setText("$" + formatter.format(Engine.getAverageDayThisMonth()));
+        view.setText("$" + formatter.format(juniper.getAverageDayThisMonth()));
 
         view = (TextView)findViewById(R.id.month_stats_field);
-        view.setText("$" + formatter.format(Engine.getMonthTotal()));
+        view.setText("$" + formatter.format(juniper.getMonthTotal()));
     }
 }
