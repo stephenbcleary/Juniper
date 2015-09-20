@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by alex on 11/05/15.
  */
-public class Engine {
+public class Juniper {
     private static List<TipEntry> tipsList = new ArrayList<TipEntry>();
 
     static {
@@ -33,7 +33,7 @@ public class Engine {
         }
     }
 
-    private Engine() {
+    private Juniper() {
         // Enforce singleton.
     }
 
