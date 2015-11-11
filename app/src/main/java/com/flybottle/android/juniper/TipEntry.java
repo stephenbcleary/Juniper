@@ -1,23 +1,27 @@
 package com.flybottle.android.juniper;
 
+import com.jjoe64.graphview.series.DataPointInterface;
+
 import java.util.Calendar;
+import java.util.Date;
 
 
-public class TipEntry {
-    private double ammount;
-    private Calendar startDate;
-    private Calendar endDate;
+public class TipEntry implements DataPointInterface {
+    private double amount;
+    private Date startDate;
+    private Date endDate;
 
     public TipEntry() {
         // initialize to 0 dollars
-        ammount = 0.0;
+        amount = 0.0;
         Calendar now = Calendar.getInstance();
         // initialize endDate to 6 hours before NOW
-        startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR_OF_DAY, now.get(Calendar.HOUR_OF_DAY) - 6);
+        now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, now.get(Calendar.HOUR_OF_DAY) - 6);
+        startDate = now.getTime();
 
         // initialize endDate to NOW
-        endDate = Calendar.getInstance();
+        endDate = Calendar.getInstance().getTime();
     }
 
     public static boolean isValidAmmount(double ammount) {
@@ -27,45 +31,63 @@ public class TipEntry {
     }
 
     public static boolean isValidDate(Calendar calendar) {
+        return isValidDate(calendar.getTime());
+    }
+
+    public static boolean isValidDate(Date date) {
         Calendar now = Calendar.getInstance();
-        return calendar.before(now);
+        return date.before(now.getTime());
     }
 
-    public long getId() {
-        return startDate.getTimeInMillis();
+    public Double getAmount() {
+        return amount;
     }
 
-    public Double getAmmount() {
-        return ammount;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setAmmount(double ammount) {
-        this.ammount = ammount;
-    }
-
-    public Calendar getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
+        this.startDate = startDate.getTime();
     }
 
-    public Calendar getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
     public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
+        this.endDate = endDate.getTime();
     }
 
     public boolean isComplete() {
-        return TipEntry.isValidAmmount(ammount) && TipEntry.isValidDate(startDate)
+        return TipEntry.isValidAmmount(amount) && TipEntry.isValidDate(startDate)
                 && TipEntry.isValidDate(endDate) && startDate.before(endDate);
     }
 
     public double perHour() {
-        return ammount / startDate.compareTo(endDate);
+        return amount / startDate.compareTo(endDate);
     }
 
+    @Override
+    public double getY() {
+        return getAmount();
+    }
+
+    @Override
+    public double getX() {
+            return getStartDate().getTime();
+    }
+
+    @Override
+    public String toString() {
+        return "TipEntry{" +
+                "amount=" + amount +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

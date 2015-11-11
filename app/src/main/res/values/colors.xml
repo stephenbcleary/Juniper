@@ -15,8 +15,10 @@
  limitations under the License.
 -->
 <resources>
-    <color name="fab_color_1">#40465E</color>
-    <color name="fab_color_1_muted">#8589A4</color>
+    <color name="fab_color_1">#5F7696</color>
+    <color name="fab_color_1_muted">#ADC8DD</color>
     <color name="form_divider_lines">#e0e0e0</color>
     <color name="form_date_time_text">#424242</color>
+    <color name="graph_labels">#BAD06B</color>
+    <color name="graph_bars">#40465E</color>
 </resources>

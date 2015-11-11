@@ -75,13 +75,15 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Calendar startDate = tipEntry.getStartDate();
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(tipEntry.getStartDate());
         startDate.set(year, month, day);
         refreshDate();
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Calendar startDate = tipEntry.getStartDate();
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(tipEntry.getStartDate());
         startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
         startDate.set(Calendar.MINUTE, minute);
         refreshTime();
@@ -91,7 +93,7 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
         TextView ammount = (TextView)findViewById(R.id.tipout_entry);
         String ammountString = ammount.getText().toString();
         double ammountDouble = Double.parseDouble(ammountString);
-        tipEntry.setAmmount(Double.parseDouble(ammountString));
+        tipEntry.setAmount(Double.parseDouble(ammountString));
 
         //if (tipEntry.isComplete()) {
             juniper.addTip(tipEntry);

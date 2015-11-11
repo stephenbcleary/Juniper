@@ -1,21 +1,26 @@
 package com.flybottle.android.juniper;
 
+import com.jjoe64.graphview.series.DataPoint;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by alex on 11/05/15.
  */
+// TODO This should probably establish other services on multiple threads.
 public class Juniper {
     private static Juniper instance = null;
     private static List<TipEntry> tipsList = new ArrayList<TipEntry>();
 
+    // FIXME This shouldn't need to generate example data.
     static {
         TipEntry entry = new TipEntry();
         entry.setStartDate(Calendar.getInstance());
         entry.setEndDate(Calendar.getInstance());
-        entry.setAmmount(258.85D);
+        entry.setAmount(258.85D);
         tipsList.add(entry);
 
         for (int i=0; i<30; i++) {
@@ -29,7 +34,7 @@ public class Juniper {
 
             entry2.setStartDate(start);
             entry2.setEndDate(end);
-            entry2.setAmmount((i % 7) * 10.15);
+            entry2.setAmount((i % 7) * 10.15);
             tipsList.add(entry2);
         }
     }
@@ -46,144 +51,38 @@ public class Juniper {
     }
 
     public void addTip(TipEntry entry) {
+        // FIXME: This should add to a database.
         tipsList.add(entry);
     }
 
-    public static TipEntry getTip(long id) {
+    public List<TipEntry> getWeek() {
+        Date startOfWeek = DateUtils.getWeekStart();
+        Date endOfWeek = DateUtils.getWeekEnd();
+        return getTimeInterval(startOfWeek, endOfWeek);
+    }
+
+    public List<TipEntry> getMonth() {
+        Date startOfMonth = DateUtils.getMonthStart();
+        Date endOfMonth = DateUtils.getMonthEnd();
+        return getTimeInterval(startOfMonth, endOfMonth);
+    }
+
+    public List<TipEntry> getTimeInterval(Date start, Date end) {
+        List<TipEntry> entryList = new ArrayList<TipEntry>();
         for (TipEntry entry : tipsList) {
-            if (entry.getId() == id) {
-                return entry;
+            if (entry.getStartDate().before(end) && start.before(entry.getStartDate())) {
+                entryList.add(entry);
             }
         }
-        return null;
+        return entryList;
     }
 
-    public List<TipEntry> getTipList() {
-        return tipsList;
+    public DataPoint[] getWeekAsArray() {
+        List<TipEntry> tips = getWeek();
+        DataPoint[] series = new DataPoint[tips.size()];
+        for(int i=0; i<tips.size(); i++) {
+            series[i] = new DataPoint(tips.get(i).getStartDate(), tips.get(i).getAmount());
+        }
+        return series;
     }
-
-    public double getWeekTotal() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
-        double total = 0.0;
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                total += entry.getAmmount();
-            }
-        }
-        return total;
-    }
-
-    public double getBestDayThisWeek() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
-        double best = 0.0;
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                if (best < entry.getAmmount()) {
-                    best = entry.getAmmount();
-                }
-            }
-        }
-        return best;
-    }
-
-    public double getWorstDayThisWeek() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
-        List<TipEntry> thisWeek = new ArrayList<TipEntry>();
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                thisWeek.add(entry);
-            }
-        }
-        double worst = thisWeek.get(0).getAmmount();
-        for (TipEntry entry : thisWeek) {
-            if (worst > entry.getAmmount()) {
-                worst = entry.getAmmount();
-            }
-        }
-        return worst;
-    }
-
-    public double getAverageDayThisWeek() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR) - 7);
-        int daysWorked = 0;
-        double total = 0.0;
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                daysWorked++;
-                total += entry.getAmmount();
-            }
-        }
-        return total / daysWorked;
-    }
-
-    public double getMonthTotal() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
-        double total = 0.0;
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                total += entry.getAmmount();
-            }
-        }
-        return total;
-    }
-
-    public double getBestDayThisMonth() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
-        double best = 0.0;
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                if (best < entry.getAmmount()) {
-                    best = entry.getAmmount();
-                }
-            }
-        }
-        return best;
-    }
-
-    public double getWorstDayThisMonth() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
-        List<TipEntry> thisWeek = new ArrayList<TipEntry>();
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                thisWeek.add(entry);
-            }
-        }
-        double worst = thisWeek.get(0).getAmmount();
-        for (TipEntry entry : thisWeek) {
-            if (worst > entry.getAmmount()) {
-                worst = entry.getAmmount();
-            }
-        }
-        return worst;
-    }
-
-    public double getAverageDayThisMonth() {
-        Calendar now = Calendar.getInstance();
-        Calendar past = Calendar.getInstance();
-        past.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
-        int daysWorked = 0;
-        double total = 0.0;
-        for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(now) && past.before(entry.getStartDate())) {
-                daysWorked++;
-                total += entry.getAmmount();
-            }
-        }
-        return total / daysWorked;
-    }
-
 }
