@@ -80,16 +80,7 @@ public class LauncherActivity extends Activity {
 
     private GraphView getWeeklyGraph() {
         // Generate graph
-        Date startOfWeek = DateUtils.getWeekStart();
-        Date endOfWeek = DateUtils.getWeekEnd();
-        /*FIXME The rendering of the appropriate Data is using 100% CPU.
-         Even with getSpoofTips()
-         It looks to be part of the .getX and .getY methods in TipEntry.
-         This looks to be related to submitting unordered data on the X value.
-         */
-
-        //BarGraphSeries<TipEntry> series = getSpoofTips();
-        BarGraphSeries<DataPoint> series = getSpoofData();
+        BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getWeekAsArray());
         GraphView graph = (GraphView) findViewById(R.id.weekGraph);
         graph.addSeries(series);
 
@@ -116,61 +107,9 @@ public class LauncherActivity extends Activity {
     }
 
     private GraphView getMonthlyGraph() {
-        Date startOfMonth = DateUtils.getMonthStart();
-        Date endOfMonth = DateUtils.getMonthEnd();
-        return generateGraph((GraphView) findViewById(R.id.monthGraph), startOfMonth, endOfMonth);
-    }
-
-    private BarGraphSeries<DataPoint> getSpoofData(){
-        return new BarGraphSeries<DataPoint>(new DataPoint[]{
-                new DataPoint(new Date(2015, 8, 5), 105.0),
-                new DataPoint(new Date(2015, 8, 6), 258.0),
-                new DataPoint(new Date(2015, 8, 7), 59.0),
-                new DataPoint(new Date(2015, 8, 8), 36.0),
-                new DataPoint(new Date(2015, 8, 9), 185.0),
-                new DataPoint(new Date(2015, 8, 10), 585.0),
-                new DataPoint(new Date(2015, 8, 11), 33.0)
-        });
-    }
-
-    private BarGraphSeries<TipEntry> getSpoofTips() {
-        TipEntry[] tips = new TipEntry[7];
-
-        for (int i=0; i<tips.length; i++) {
-            TipEntry entry = new TipEntry();
-            Calendar start = Calendar.getInstance();
-            Calendar end = Calendar.getInstance();
-
-            // This appears to need to be ordered.
-            start.set(Calendar.DAY_OF_YEAR, start.get(Calendar.DAY_OF_YEAR) - (7-i));
-            end.set(Calendar.DAY_OF_YEAR, end.get(Calendar.DAY_OF_YEAR) - (7-i));
-            end.set(Calendar.HOUR_OF_DAY, end.get(Calendar.HOUR_OF_DAY) - 5);
-
-            entry.setStartDate(start);
-            entry.setEndDate(end);
-            entry.setAmount(i * 10.15);
-            Log.d("BarGraphSeries", i + ": x=" + entry.getStartDate() + " y=" + entry.getY());
-            tips[i] = entry;
-        }
-        return new BarGraphSeries<TipEntry>(tips);
-    }
-
-    private GraphView generateGraph(GraphView graph, Date start, Date end) {
-
-        BarGraphSeries<DataPoint> series = getSpoofData();
-        //BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getWeekAsArray());
-
+        BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getMonthAsArray());
+        GraphView graph = (GraphView) findViewById(R.id.monthGraph);
         graph.addSeries(series);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
-        graph.getGridLabelRenderer().setNumVerticalLabels(4);
-        series.setColor(getResources().getColor(R.color.graph_bars));
-        series.setSpacing(50);
-        series.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface datapoint) {
-                Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
-            }
-        });
         return graph;
     }
 }

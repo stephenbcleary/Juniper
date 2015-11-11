@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class TipEntry implements DataPointInterface {
+public class TipEntry implements Comparable<TipEntry>, DataPointInterface {
     private double amount;
     private Date startDate;
     private Date endDate;
@@ -89,5 +89,16 @@ public class TipEntry implements DataPointInterface {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';
+    }
+
+    /**
+     * Objects of this class are ordered by start date.  This method compares to objects for
+     * ordering.
+     * @param otherTipEntry The Object to be compared to.
+     * @return A positive integer if thisTip > otherTip.  Zero if equal.  negative if <.
+     */
+    @Override
+    public int compareTo(TipEntry otherTipEntry) {
+        return startDate.compareTo(otherTipEntry.getStartDate());
     }
 }

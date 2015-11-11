@@ -4,6 +4,7 @@ import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -74,15 +75,17 @@ public class Juniper {
                 entryList.add(entry);
             }
         }
+        Collections.sort(entryList);
         return entryList;
     }
 
-    public DataPoint[] getWeekAsArray() {
+    public TipEntry[] getWeekAsArray() {
         List<TipEntry> tips = getWeek();
-        DataPoint[] series = new DataPoint[tips.size()];
-        for(int i=0; i<tips.size(); i++) {
-            series[i] = new DataPoint(tips.get(i).getStartDate(), tips.get(i).getAmount());
-        }
-        return series;
+        return tips.toArray(new TipEntry[tips.size()]);
+    }
+
+    public TipEntry[] getMonthAsArray() {
+        List<TipEntry> tips = getMonth();
+        return tips.toArray(new TipEntry[tips.size()]);
     }
 }
