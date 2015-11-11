@@ -26,13 +26,18 @@ public abstract class DateUtils {
 
     protected static Date getMonthStart() {
         Calendar now = Calendar.getInstance();
-        now.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_WEEK) - now.get(Calendar.DAY_OF_MONTH));
+        now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), 1);
         return now.getTime();
     }
 
     protected static Date getMonthEnd() {
         Calendar now = Calendar.getInstance();
-        now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), 0);
+        now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1, 0);
         return now.getTime();
+    }
+
+    protected static int daysBetween(Date start, Date end) {
+        // milliseconds to days = 1000 * 60 * 60 * 24 = 86400000
+        return (int)((end.getTime() - start.getTime()) / 86400000);
     }
 }
