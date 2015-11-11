@@ -2,74 +2,75 @@ package com.flybottle.android.juniper;
 
 import com.jjoe64.graphview.series.DataPointInterface;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
 
 
 public class TipEntry implements Comparable<TipEntry>, DataPointInterface {
     private double amount;
-    private Date startDate;
-    private Date endDate;
+    private Interval dateInterval;
 
     public TipEntry() {
         // initialize to 0 dollars
         amount = 0.0;
-        Calendar now = Calendar.getInstance();
-        // initialize endDate to 6 hours before NOW
-        now = Calendar.getInstance();
-        now.set(Calendar.HOUR_OF_DAY, now.get(Calendar.HOUR_OF_DAY) - 6);
-        startDate = now.getTime();
-
-        // initialize endDate to NOW
-        endDate = Calendar.getInstance().getTime();
+        // initialize interval to 6 hours prior to now and now.
+        dateInterval = new Interval(DateTime.now().minusHours(6), DateTime.now());
     }
 
-    public static boolean isValidAmmount(double ammount) {
-        double mantisa = ammount - ((int) ammount);
-        double thousands = (mantisa * 100) - ((int)(mantisa * 100));
-        return (thousands == 0.0) && (ammount >= 0);
-    }
-
-    public static boolean isValidDate(Calendar calendar) {
-        return isValidDate(calendar.getTime());
-    }
-
-    public static boolean isValidDate(Date date) {
-        Calendar now = Calendar.getInstance();
-        return date.before(now.getTime());
-    }
-
+    // Getters & Setters
     public Double getAmount() {
         return amount;
     }
 
     public void setAmount(double amount) {
-        this.amount = amount;
+        if (isValidAmmount(amount)) {
+            this.amount = amount;
+        }
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Interval getDateInterval() {
+        return dateInterval;
     }
 
-    public void setStartDate(Calendar startDate) {
-        this.startDate = startDate.getTime();
+    public void setDateInterval(Interval dateInterval) {
+        this.dateInterval = dateInterval;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public DateTime getStartDate() {
+        return dateInterval.getStart();
     }
 
-    public void setEndDate(Calendar endDate) {
-        this.endDate = endDate.getTime();
+    public void setStartDate(DateTime startDate) {
+        if (startDate.isBefore(dateInterval.getEnd())) {
+            dateInterval = dateInterval.withStart(startDate);
+        }
+    }
+
+    public DateTime getEndDate() {
+        return dateInterval.getEnd();
+    }
+
+    public void setEndDate(DateTime endDate) {
+        if (endDate.isAfter(dateInterval.getStart()) && endDate.isBefore(DateTime.now())) {
+            dateInterval = dateInterval.withEnd(endDate);
+        }
+    }
+
+    // Class Methods
+    public static boolean isValidAmmount(double ammount) {
+        double mantisa = ammount - ((int) ammount);
+        double thousands = (mantisa * 100) - ((int)(mantisa * 100));
+        //return (thousands == 0.0) && (ammount >= 0);
+        return true;
     }
 
     public boolean isComplete() {
-        return TipEntry.isValidAmmount(amount) && TipEntry.isValidDate(startDate)
-                && TipEntry.isValidDate(endDate) && startDate.before(endDate);
+        return TipEntry.isValidAmmount(amount);
     }
 
     public double perHour() {
-        return amount / startDate.compareTo(endDate);
+        return amount / dateInterval.toDuration().toPeriod().getHours();
     }
 
     @Override
@@ -79,15 +80,14 @@ public class TipEntry implements Comparable<TipEntry>, DataPointInterface {
 
     @Override
     public double getX() {
-            return getStartDate().getTime();
+            return (double) dateInterval.getStartMillis();
     }
 
     @Override
     public String toString() {
         return "TipEntry{" +
                 "amount=" + amount +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", dateInterval=" + dateInterval +
                 '}';
     }
 
@@ -99,6 +99,6 @@ public class TipEntry implements Comparable<TipEntry>, DataPointInterface {
      */
     @Override
     public int compareTo(TipEntry otherTipEntry) {
-        return startDate.compareTo(otherTipEntry.getStartDate());
+        return getStartDate().compareTo(otherTipEntry.getStartDate());
     }
 }

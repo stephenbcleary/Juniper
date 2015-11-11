@@ -15,7 +15,6 @@ import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class TipEntryActivity extends Activity implements TimePickerDialog.OnTimeSetListener,
                                                           DatePickerDialog.OnDateSetListener {
@@ -45,23 +44,27 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     private void refreshDate() {
         DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
         TextView startDate = (TextView) findViewById(R.id.tip_entry_date_field);
-        startDate.setText(formatter.format(tipEntry.getStartDate().getTime()));
-        if (!TipEntry.isValidDate(tipEntry.getStartDate())) {
+        startDate.setText(formatter.format(tipEntry.getStartDate()));
+        /*
+        if (!TipEntry.isValidStartDate(tipEntry.getStartDate())) {
             startDate.setError("Invalid Date");
         } else {
             startDate.setError(null);
         }
+        */
     }
 
     private void refreshTime() {
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         TextView startTime = (TextView)findViewById(R.id.tip_entry_time_field);
-        startTime.setText(formatter.format(tipEntry.getStartDate().getTime()));
+        startTime.setText(formatter.format(tipEntry.getStartDate()));
+        /*
         if (!TipEntry.isValidDate(tipEntry.getStartDate())) {
             startTime.setError("Invalid Date");
         } else {
             startTime.setError(null);
         }
+        */
     }
 
     public void showTimePickerDialog(View v) {
@@ -75,17 +78,21 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
+        /*
         Calendar startDate = Calendar.getInstance();
         startDate.setTime(tipEntry.getStartDate());
         startDate.set(year, month, day);
+        */
         refreshDate();
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        /*
         Calendar startDate = Calendar.getInstance();
         startDate.setTime(tipEntry.getStartDate());
         startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
         startDate.set(Calendar.MINUTE, minute);
+        */
         refreshTime();
     }
 

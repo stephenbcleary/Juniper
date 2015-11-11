@@ -1,12 +1,14 @@
 package com.flybottle.android.juniper;
 
-import com.jjoe64.graphview.series.DataPoint;
+import android.util.Log;
+
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+
+import javax.xml.datatype.Duration;
 
 /**
  * Created by alex on 11/05/15.
@@ -18,25 +20,12 @@ public class Juniper {
 
     // FIXME This shouldn't need to generate example data.
     static {
-        TipEntry entry = new TipEntry();
-        entry.setStartDate(Calendar.getInstance());
-        entry.setEndDate(Calendar.getInstance());
-        entry.setAmount(258.85D);
-        tipsList.add(entry);
-
         for (int i=0; i<30; i++) {
-            TipEntry entry2 = new TipEntry();
-            Calendar start = Calendar.getInstance();
-            Calendar end = Calendar.getInstance();
-
-            start.set(Calendar.DAY_OF_YEAR, start.get(Calendar.DAY_OF_YEAR) - i);
-            end.set(Calendar.DAY_OF_YEAR, end.get(Calendar.DAY_OF_YEAR) - i);
-            end.set(Calendar.HOUR_OF_DAY, end.get(Calendar.HOUR_OF_DAY) - 5);
-
-            entry2.setStartDate(start);
-            entry2.setEndDate(end);
-            entry2.setAmount((i % 7) * 10.15);
-            tipsList.add(entry2);
+            TipEntry entry = new TipEntry();
+            entry.setStartDate(DateTime.now().minusHours(5).minusDays(i));
+            entry.setEndDate(DateTime.now().minusDays(i));
+            entry.setAmount((i % 7) * 10.15);
+            tipsList.add(entry);
         }
     }
 
@@ -57,26 +46,53 @@ public class Juniper {
     }
 
     public List<TipEntry> getWeek() {
-        Date startOfWeek = DateUtils.getWeekStart();
-        Date endOfWeek = DateUtils.getWeekEnd();
-        return getTimeInterval(startOfWeek, endOfWeek);
+        return getTipsWithinInterval(DateUtils.getWeekStart(), DateUtils.getWeekEnd());
     }
 
     public List<TipEntry> getMonth() {
-        Date startOfMonth = DateUtils.getMonthStart();
-        Date endOfMonth = DateUtils.getMonthEnd();
-        return getTimeInterval(startOfMonth, endOfMonth);
+        return getTipsWithinInterval(DateUtils.getMonthStart(), DateUtils.getMonthEnd());
     }
 
-    public List<TipEntry> getTimeInterval(Date start, Date end) {
-        List<TipEntry> entryList = new ArrayList<TipEntry>();
+    public List<TipEntry> getTipsWithinInterval(Interval dateInterval) {
+        // Create an Array of length interval.
+        int days = dateInterval.toDuration().toStandardDays().getDays();
+        TipEntry[] entryList = new TipEntry[days];
+
+        // Add tips to the element in the list that corresponds with the date.
         for (TipEntry entry : tipsList) {
-            if (entry.getStartDate().before(end) && start.before(entry.getStartDate())) {
-                entryList.add(entry);
+            if (dateInterval.overlaps(entry.getDateInterval())) {
+                Interval distance = new Interval(dateInterval.getStart(), entry.getStartDate());
+                entryList[distance.toDuration().toStandardDays().getDays()] = entry;
             }
         }
-        Collections.sort(entryList);
-        return entryList;
+        //Collections.sort(entryList);
+        for (int i=0; i<entryList.length; i++) {
+            if (entryList[i] == null) {
+                // set empty entry
+                TipEntry emptyEntry = new TipEntry();
+                Interval emptyDate = new Interval(dateInterval.getStart().plusDays(i),
+                                                  dateInterval.getStart().plusDays(i));
+                emptyEntry.setDateInterval(emptyDate);
+                // add entry to empty day.
+                entryList[i] = emptyEntry;
+            }
+        }
+        ArrayList<TipEntry> resultList = new ArrayList<TipEntry>();
+        for (TipEntry entry : entryList) {
+            resultList.add(entry);
+        }
+        return resultList;
+    }
+
+    /**
+     * This method returns all the tips within a given date range (inclusive).  If there are days
+     * with no entries these are created (but not saved to the Database).
+     * @param start The start date of the interval.
+     * @param end The end date of the interval.
+     * @return A List of seven TipEntries, one for each day.
+     */
+    public List<TipEntry> getTipsWithinInterval(DateTime start, DateTime end) {
+        return getTipsWithinInterval(new Interval(start.minusDays(1), end));
     }
 
     public TipEntry[] getWeekAsArray() {
@@ -88,4 +104,6 @@ public class Juniper {
         List<TipEntry> tips = getMonth();
         return tips.toArray(new TipEntry[tips.size()]);
     }
+
+
 }

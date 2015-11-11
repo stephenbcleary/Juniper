@@ -28,8 +28,6 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class LauncherActivity extends Activity {
     private Juniper juniper = Juniper.getInstance();
@@ -88,7 +86,7 @@ public class LauncherActivity extends Activity {
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(getResources().getColor(R.color.graph_labels));
         series.setColor(getResources().getColor(R.color.graph_bars));
-        series.setSpacing(50);
+        series.setSpacing(30);
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface datapoint) {
@@ -112,4 +110,6 @@ public class LauncherActivity extends Activity {
         graph.addSeries(series);
         return graph;
     }
+
+
 }

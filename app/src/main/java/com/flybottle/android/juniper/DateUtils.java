@@ -2,8 +2,8 @@ package com.flybottle.android.juniper;
 
 import android.util.Log;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 /**
  * This class contains utilities for handling dates.
@@ -12,32 +12,19 @@ import java.util.Date;
  */
 public abstract class DateUtils {
 
-    protected static Date getWeekStart() {
-        Calendar now = Calendar.getInstance();
-        now.set(Calendar.DAY_OF_WEEK, now.getFirstDayOfWeek());
-        return now.getTime();
+    protected static DateTime getWeekStart() {
+        return DateTime.now().withDayOfWeek(1);
     }
 
-    protected static Date getWeekEnd() {
-        Calendar now = Calendar.getInstance();
-        now.set(Calendar.DAY_OF_WEEK, now.getFirstDayOfWeek() + 6);
-        return now.getTime();
+    protected static DateTime getWeekEnd() {
+        return DateTime.now().withDayOfWeek(7);
     }
 
-    protected static Date getMonthStart() {
-        Calendar now = Calendar.getInstance();
-        now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), 1);
-        return now.getTime();
+    protected static DateTime getMonthStart() {
+        return DateTime.now().withDayOfMonth(1);
     }
 
-    protected static Date getMonthEnd() {
-        Calendar now = Calendar.getInstance();
-        now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1, 0);
-        return now.getTime();
-    }
-
-    protected static int daysBetween(Date start, Date end) {
-        // milliseconds to days = 1000 * 60 * 60 * 24 = 86400000
-        return (int)((end.getTime() - start.getTime()) / 86400000);
+    protected static DateTime getMonthEnd() {
+        return DateTime.now().withDayOfMonth(DateTime.now().dayOfMonth().getMaximumValue());
     }
 }

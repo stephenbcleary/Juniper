@@ -59,7 +59,7 @@ public class TipsAdapter  extends RecyclerView.Adapter<TipsAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
-        holder.tipDate.setText(formatter.format(tipsDataset.get(position).getStartDate().getTime()));
+        holder.tipDate.setText(formatter.format(tipsDataset.get(position).getStartDate()));
 
         NumberFormat numberFormat = new DecimalFormat("#0.00");
         holder.tipPerHour.setText(numberFormat.format(tipsDataset.get(position).perHour()) + "/hr");
