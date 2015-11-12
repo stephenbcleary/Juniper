@@ -2,31 +2,20 @@ package com.flybottle.android.juniper;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 public class LauncherActivity extends Activity {
@@ -63,8 +52,9 @@ public class LauncherActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        getWeeklyGraph();
-        getMonthlyGraph();
+        // TODO Should update the "This Week" label to state the actual week range.
+        updateWeeklyGraph();
+        updateMonthlyGraph();
     }
 
     /**
@@ -76,19 +66,15 @@ public class LauncherActivity extends Activity {
         startActivity(intent);
     }
 
-    private GraphView getWeeklyGraph() {
-        // Generate graph
+    private GraphView updateWeeklyGraph() {
+        GraphView graph = getStyledWeeklyGraph();
+        graph.addSeries(getWeeklySeries());
+        return graph;
+    }
+
+    private BarGraphSeries<TipEntry> getWeeklySeries(){
         BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getWeekAsArray());
-        GraphView graph = (GraphView) findViewById(R.id.weekGraph);
-        graph.addSeries(series);
-
-        // format Viewport
-        //graph.getViewport().setXAxisBoundsManual(true);
-        //graph.getViewport().setMinX((double)(DateUtils.getWeekStart().getMillis()));
-        //graph.getViewport().setMaxX((double)(DateUtils.getWeekEnd().withTimeAtStartOfDay().getMillis()));
-
-        // format series
-                series.setDrawValuesOnTop(true);
+        series.setDrawValuesOnTop(true);
         series.setSpacing(50);
         series.setValuesOnTopColor(getResources().getColor(R.color.graph_labels));
         series.setColor(getResources().getColor(R.color.graph_bars));
@@ -98,7 +84,11 @@ public class LauncherActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
             }
         });
+        return series;
+    }
 
+    private GraphView getStyledWeeklyGraph(){
+        GraphView graph = (GraphView) findViewById(R.id.weekGraph);
         // format graph
         DateFormat dateFormat = new SimpleDateFormat("EEE"); // EEE
         //graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getApplicationContext(), dateFormat));
@@ -109,12 +99,20 @@ public class LauncherActivity extends Activity {
         return graph;
     }
 
-    private GraphView getMonthlyGraph() {
-        BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getMonthAsArray());
-        GraphView graph = (GraphView) findViewById(R.id.monthGraph);
-        graph.addSeries(series);
+    private GraphView updateMonthlyGraph() {
+        GraphView graph = getStyledMonthlyGraph();
+        graph.addSeries(getMonthlySeries());
         return graph;
     }
 
+    private BarGraphSeries<TipEntry> getMonthlySeries(){
+        BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getMonthAsArray());
+        return series;
+    }
+
+    private GraphView getStyledMonthlyGraph() {
+        GraphView graph = (GraphView) findViewById(R.id.monthGraph);
+        return graph;
+    }
 
 }
