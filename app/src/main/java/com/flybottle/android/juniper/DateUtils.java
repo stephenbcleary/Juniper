@@ -13,18 +13,19 @@ import org.joda.time.Interval;
 public abstract class DateUtils {
 
     protected static DateTime getWeekStart() {
-        return DateTime.now().withDayOfWeek(1);
+        return DateTime.now().withDayOfWeek(1).withTimeAtStartOfDay();
     }
 
     protected static DateTime getWeekEnd() {
-        return DateTime.now().withDayOfWeek(7);
+        return getWeekStart().plusDays(6).plusHours(23).plusMinutes(59).plusSeconds(59);
     }
 
     protected static DateTime getMonthStart() {
-        return DateTime.now().withDayOfMonth(1);
+        return DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
     }
 
     protected static DateTime getMonthEnd() {
-        return DateTime.now().withDayOfMonth(DateTime.now().dayOfMonth().getMaximumValue());
+        return getMonthStart().withDayOfMonth(DateTime.now().dayOfMonth().getMaximumValue());
+                                                //.plusHours(23).plusMinutes(59).plusSeconds(59);
     }
 }

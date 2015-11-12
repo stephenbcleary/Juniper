@@ -82,11 +82,16 @@ public class LauncherActivity extends Activity {
         GraphView graph = (GraphView) findViewById(R.id.weekGraph);
         graph.addSeries(series);
 
+        // format Viewport
+        //graph.getViewport().setXAxisBoundsManual(true);
+        //graph.getViewport().setMinX((double)(DateUtils.getWeekStart().getMillis()));
+        //graph.getViewport().setMaxX((double)(DateUtils.getWeekEnd().withTimeAtStartOfDay().getMillis()));
+
         // format series
-        series.setDrawValuesOnTop(true);
+                series.setDrawValuesOnTop(true);
+        series.setSpacing(50);
         series.setValuesOnTopColor(getResources().getColor(R.color.graph_labels));
         series.setColor(getResources().getColor(R.color.graph_bars));
-        series.setSpacing(30);
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface datapoint) {
@@ -95,12 +100,12 @@ public class LauncherActivity extends Activity {
         });
 
         // format graph
-        DateFormat dateFormat = new SimpleDateFormat("EEE");
-        graph.getGridLabelRenderer().setLabelFormatter(
-                new DateAsXAxisLabelFormatter(getApplicationContext(), dateFormat));
+        DateFormat dateFormat = new SimpleDateFormat("EEE"); // EEE
+        //graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getApplicationContext(), dateFormat));
         graph.getGridLabelRenderer().setNumHorizontalLabels(7);
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
         graph.getGridLabelRenderer().setNumVerticalLabels(4);
+        graph.getGridLabelRenderer().setHighlightZeroLines(false);
         return graph;
     }
 

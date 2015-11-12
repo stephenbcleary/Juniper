@@ -55,16 +55,19 @@ public class Juniper {
 
     public List<TipEntry> getTipsWithinInterval(Interval dateInterval) {
         // Create an Array of length interval.
-        int days = dateInterval.toDuration().toStandardDays().getDays();
+        int days = dateInterval.toDuration().toStandardDays().getDays() + 1; // +1 for inclusive.
         TipEntry[] entryList = new TipEntry[days];
 
         // Add tips to the element in the list that corresponds with the date.
         for (TipEntry entry : tipsList) {
-            if (dateInterval.overlaps(entry.getDateInterval())) {
+            if (dateInterval.contains(entry.getStartDate())) {
+                // Interval of start of array to start of entry
                 Interval distance = new Interval(dateInterval.getStart(), entry.getStartDate());
+                // insert entry at days from start.
                 entryList[distance.toDuration().toStandardDays().getDays()] = entry;
             }
         }
+
         //Collections.sort(entryList);
         for (int i=0; i<entryList.length; i++) {
             if (entryList[i] == null) {
@@ -80,6 +83,7 @@ public class Juniper {
         ArrayList<TipEntry> resultList = new ArrayList<TipEntry>();
         for (TipEntry entry : entryList) {
             resultList.add(entry);
+            Log.wtf("ALEX", entry.getStartDate().toString());
         }
         return resultList;
     }
@@ -92,7 +96,8 @@ public class Juniper {
      * @return A List of seven TipEntries, one for each day.
      */
     public List<TipEntry> getTipsWithinInterval(DateTime start, DateTime end) {
-        return getTipsWithinInterval(new Interval(start.minusDays(1), end));
+        Log.wtf("GTWI", start.toString() + " : " + end.toString() );
+        return getTipsWithinInterval(new Interval(start, end));
     }
 
     public TipEntry[] getWeekAsArray() {
@@ -104,6 +109,5 @@ public class Juniper {
         List<TipEntry> tips = getMonth();
         return tips.toArray(new TipEntry[tips.size()]);
     }
-
 
 }

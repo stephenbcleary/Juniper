@@ -70,7 +70,7 @@ public class TipEntry implements Comparable<TipEntry>, DataPointInterface {
     }
 
     public double perHour() {
-        return amount / dateInterval.toDuration().toPeriod().getHours();
+        return amount / dateInterval.toDuration().toStandardDays().getDays();
     }
 
     @Override
@@ -80,14 +80,16 @@ public class TipEntry implements Comparable<TipEntry>, DataPointInterface {
 
     @Override
     public double getX() {
-            return (double) dateInterval.getStartMillis();
+        // This is messing with the graph alignment.
+        //return (double) dateInterval.getStart().withTimeAtStartOfDay().getMillis();
+        return (double) dateInterval.getStart().getDayOfMonth();
     }
 
     @Override
     public String toString() {
         return "TipEntry{" +
-                "amount=" + amount +
-                ", dateInterval=" + dateInterval +
+                "amount=" + amount + ", " +
+                "dateInterval=" + dateInterval +
                 '}';
     }
 
