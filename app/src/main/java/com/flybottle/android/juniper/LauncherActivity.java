@@ -107,11 +107,21 @@ public class LauncherActivity extends Activity {
 
     private BarGraphSeries<TipEntry> getMonthlySeries(){
         BarGraphSeries<TipEntry> series = new BarGraphSeries<TipEntry>(juniper.getMonthAsArray());
+        series.setColor(getResources().getColor(R.color.graph_bars));
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface datapoint) {
+                Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
+            }
+        });
         return series;
     }
 
     private GraphView getStyledMonthlyGraph() {
         GraphView graph = (GraphView) findViewById(R.id.monthGraph);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
+        graph.getGridLabelRenderer().setNumVerticalLabels(4);
+        graph.getGridLabelRenderer().setHighlightZeroLines(false);
         return graph;
     }
 
