@@ -44,7 +44,7 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     private void refreshDate() {
         DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
         TextView startDate = (TextView) findViewById(R.id.tip_entry_date_field);
-        startDate.setText(formatter.format(tipEntry.getStartDate()));
+        startDate.setText(formatter.format(tipEntry.getStartDate().toDate()));
         /*
         if (!TipEntry.isValidStartDate(tipEntry.getStartDate())) {
             startDate.setError("Invalid Date");
@@ -57,7 +57,7 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     private void refreshTime() {
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         TextView startTime = (TextView)findViewById(R.id.tip_entry_time_field);
-        startTime.setText(formatter.format(tipEntry.getStartDate()));
+        startTime.setText(formatter.format(tipEntry.getStartDate().toDate()));
         /*
         if (!TipEntry.isValidDate(tipEntry.getStartDate())) {
             startTime.setError("Invalid Date");
