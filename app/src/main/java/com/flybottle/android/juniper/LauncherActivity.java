@@ -3,6 +3,7 @@ package com.flybottle.android.juniper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,8 @@ public class LauncherActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+        createWeeklyGraph();
+        createMonthlyGraph();
     }
 
     @Override
@@ -55,6 +58,7 @@ public class LauncherActivity extends Activity {
         // TODO Should update the "This Week" label to state the actual week range.
         updateWeeklyGraph();
         updateMonthlyGraph();
+        Log.d("onResume", "Called");
     }
 
     /**
@@ -66,7 +70,7 @@ public class LauncherActivity extends Activity {
         startActivity(intent);
     }
 
-    private GraphView updateWeeklyGraph() {
+    private GraphView createWeeklyGraph() {
         GraphView graph = getStyledWeeklyGraph();
         graph.addSeries(getWeeklySeries());
         return graph;
@@ -99,7 +103,13 @@ public class LauncherActivity extends Activity {
         return graph;
     }
 
-    private GraphView updateMonthlyGraph() {
+    private void updateWeeklyGraph() {
+        GraphView graph = (GraphView) findViewById(R.id.weekGraph);
+        graph.removeAllSeries();
+        createWeeklyGraph();
+    }
+
+    private GraphView createMonthlyGraph() {
         GraphView graph = getStyledMonthlyGraph();
         graph.addSeries(getMonthlySeries());
         return graph;
@@ -125,4 +135,9 @@ public class LauncherActivity extends Activity {
         return graph;
     }
 
+    private void updateMonthlyGraph() {
+        GraphView graph = (GraphView) findViewById(R.id.monthGraph);
+        graph.removeAllSeries();
+        createMonthlyGraph();
+    }
 }

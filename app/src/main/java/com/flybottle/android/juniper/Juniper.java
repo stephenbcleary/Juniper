@@ -1,7 +1,5 @@
 package com.flybottle.android.juniper;
 
-import android.util.Log;
-
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
@@ -83,7 +81,6 @@ public class Juniper {
         ArrayList<TipEntry> resultList = new ArrayList<TipEntry>();
         for (TipEntry entry : entryList) {
             resultList.add(entry);
-            Log.wtf("ALEX", entry.getStartDate().toString());
         }
         return resultList;
     }
@@ -96,7 +93,6 @@ public class Juniper {
      * @return A List of seven TipEntries, one for each day.
      */
     public List<TipEntry> getTipsWithinInterval(DateTime start, DateTime end) {
-        Log.wtf("GTWI", start.toString() + " : " + end.toString() );
         return getTipsWithinInterval(new Interval(start, end));
     }
 
