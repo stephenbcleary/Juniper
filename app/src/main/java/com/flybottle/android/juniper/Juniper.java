@@ -106,4 +106,13 @@ public class Juniper {
         return tips.toArray(new TipEntry[tips.size()]);
     }
 
+    public TipEntry getEntryWithDateTime(DateTime date) {
+        for (TipEntry entry: tipsList) {
+            if (entry.getStartDate().equals(date)) {
+                return entry;
+            }
+        }
+        return new TipEntry();
+    }
+
 }

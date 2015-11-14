@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 
 
@@ -19,10 +22,9 @@ public class TimePickerFragment extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current time as the default value for the picker
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
+        DateTime entryDate = (DateTime) getArguments().getSerializable("entryDate");
+        int hour = entryDate.getHourOfDay();
+        int minute = entryDate.getMinuteOfHour();
 
         // Create a new instance of TimePickerFragment and return it
         return new android.app.TimePickerDialog(getActivity(), this, hour, minute,

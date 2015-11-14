@@ -10,10 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 public class TipEntryActivity extends Activity implements TimePickerDialog.OnTimeSetListener,
@@ -25,20 +31,29 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_entry);
-
         Intent intent = getIntent();
         initializeFields();
     }
 
+    protected void setTipEntry(TipEntry tipEntry) {
+        this.tipEntry = tipEntry;
+    }
 
     private void initializeFields() {
-        tipEntry = new TipEntry();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            DateTime startDate = (DateTime) extras.getSerializable("entryDate");
+            tipEntry = juniper.getEntryWithDateTime(startDate);
+        } else {
+            tipEntry = new TipEntry();
+        }
         refreshFields();
     }
 
     private void refreshFields() {
         refreshDate();
         refreshTime();
+        refreshValues();
     }
 
     private void refreshDate() {
@@ -67,8 +82,32 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
         */
     }
 
+    private void refreshValues() {
+        if (tipEntry.getAmount() != 0.0) {
+            // format ammount
+            NumberFormat formatter = new DecimalFormat("#0.00");
+            EditText tipout = (EditText) findViewById(R.id.tipout_entry);
+            tipout.setText(formatter.format(tipEntry.getAmount()));
+
+            Duration duration = tipEntry.getDateInterval().toDuration();
+            // format hours
+            long hours = duration.getStandardHours();
+            EditText hourText = (EditText) findViewById(R.id.tip_entry_duration_hours);
+            hourText.setText("" + hours);
+
+            // format minutes
+            long minutes = (duration.getStandardMinutes() % 60L);
+            EditText minuteText = (EditText) findViewById(R.id.tip_entry_duration_minutes);
+            minuteText.setText("" + minutes);
+
+        }
+    }
+
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("entryDate", tipEntry.getStartDate());
+        newFragment.setArguments(args);
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
@@ -78,21 +117,16 @@ public class TipEntryActivity extends Activity implements TimePickerDialog.OnTim
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        /*
-        Calendar startDate = Calendar.getInstance();
-        startDate.setTime(tipEntry.getStartDate());
-        startDate.set(year, month, day);
-        */
+        DateTime dateTime = tipEntry.getStartDate();
+        dateTime = dateTime.withDate(year, month, day);
+        tipEntry.setStartDate(dateTime);
         refreshDate();
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        /*
-        Calendar startDate = Calendar.getInstance();
-        startDate.setTime(tipEntry.getStartDate());
-        startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        startDate.set(Calendar.MINUTE, minute);
-        */
+        DateTime dateTime = tipEntry.getStartDate();
+        dateTime = dateTime.withTime(hourOfDay, minute, 0, 0);
+        tipEntry.setStartDate(dateTime);
         refreshTime();
     }
 

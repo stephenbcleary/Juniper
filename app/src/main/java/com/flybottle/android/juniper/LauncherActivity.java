@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -63,10 +62,16 @@ public class LauncherActivity extends Activity {
 
     /**
      * Called when the user clicks the Floating Action Button
-     * @param view The current view.
      */
-    public void addEntry(View view) {
+    public void addEntry(View view){
+        openTipEntryActivity(null);
+    }
+
+    public void openTipEntryActivity(TipEntry entry) {
         Intent intent = new Intent(this, TipEntryActivity.class);
+        if (entry != null) {
+            intent.putExtra("entryDate", entry.getStartDate());
+        }
         startActivity(intent);
     }
 
@@ -85,7 +90,8 @@ public class LauncherActivity extends Activity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface datapoint) {
-                Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
+                openTipEntryActivity((TipEntry) datapoint);
             }
         });
         return series;
@@ -121,7 +127,8 @@ public class LauncherActivity extends Activity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface datapoint) {
-                Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Series1 - Clicked: " + datapoint, Toast.LENGTH_SHORT).show();
+                openTipEntryActivity((TipEntry) datapoint);
             }
         });
         return series;
